@@ -22,7 +22,8 @@ const Select: React.FC<ISelectProps> = ({ onChange, options, value }) => {
   };
 
   const handleSelect = (option) => {
-    onChange(option);
+    // preventing changing same option over and over
+    if (value !== option) onChange(option);
   };
 
   const isOptionSelected = (option) => option === value?.label;
