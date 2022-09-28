@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ISelectOption {
   value?: string;
@@ -13,12 +13,27 @@ interface ISelectProps {
 
 const Select: React.FC<ISelectProps> = ({ onChange, options, value }) => {
   const [open, setOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
 
   const handleClear = (e) => {
     // e.preventDefault();
     e.stopPropagation();
     onChange(undefined);
   };
+
+  const handleSelect = (option) => {
+    onChange(option);
+  };
+
+  const isOptionSelected = (option) => option === value?.label;
+  const isOptionHighlighted = (index) => index === highlightedIndex;
+
+  const handleMouseEnter = (index: number) => setHighlightedIndex(index);
+
+  // setting highlighted index every time when menu is closed
+  useEffect(() => {
+    setHighlightedIndex(0);
+  }, [open]);
 
   return (
     <div
@@ -44,7 +59,14 @@ const Select: React.FC<ISelectProps> = ({ onChange, options, value }) => {
         }`}
       >
         {options.map((option, i) => (
-          <li className="option" key={`${option.value}-${i}`}>
+          <li
+            onClick={() => handleSelect(option)}
+            className={`${isOptionSelected(option.label) ? "bg-red-500" : ""} 
+            ${isOptionHighlighted(i) ? "bg-blue-500" : ""}
+              p-2`}
+            onMouseEnter={() => handleMouseEnter(i)}
+            key={`${option.value}-${i}`}
+          >
             {option.label}
           </li>
         ))}
