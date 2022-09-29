@@ -22,12 +22,19 @@ const OPTIONS = [
 
 export default function Home() {
   const [value, setValue] = useState(OPTIONS[0]);
+  const [value2, setValue2] = useState([]);
   return (
-    <div className="container flex items-center p-4 mx-auto min-h-screen justify-center">
+    <div className="container flex flex-col items-center p-4 mx-auto min-h-screen justify-center">
       <Select
         options={OPTIONS}
         value={value}
         onChange={(value) => setValue(value)}
+      />
+      <Select
+        multiple
+        options={OPTIONS}
+        value={value2}
+        onChange={(newValue) => setValue2(newValue)}
       />
     </div>
   );
